@@ -10,7 +10,6 @@ namespace MiConsorcio.Domain.Models
     public class Gasto
     {
         public Guid Id { get; private set; }
-
         public Guid ConsorcioId { get; private set; }
 
         public Periodo PeriodoContable { get; private set; }

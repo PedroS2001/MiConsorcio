@@ -17,10 +17,24 @@ namespace MiConsorcio.Domain.Models
         public DateTime Fecha { get; private set; }
         public decimal Monto { get; private set; }
 
-        public string MedioPago { get; private set; }
+        public EMedioDePago MedioPago { get; private set; }
         public string? Observacion { get; private set; }
 
         public EEstadoPago Estado { get; private set; }
+
+        public Pago(Guid consorcioId,Guid unidadFuncionalId,DateTime fecha,decimal monto,EMedioDePago medioDePago)
+        {
+            if (monto <= 0)
+                throw new Exception("El monto del pago debe ser mayor a cero");
+
+            Id = Guid.NewGuid();
+            ConsorcioId = consorcioId;
+            UnidadFuncionalId = unidadFuncionalId;
+            Fecha = fecha;
+            Monto = monto;
+            MedioPago = medioDePago;
+        }
+
     }
 
 }

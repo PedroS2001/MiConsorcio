@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace MiConsorcio.Domain.Enums
 {
-    public enum EEstadoPago
+    public enum EMedioDePago
     {
-        Registrado,
-        Aprobado,
-        Rechazado
+        Efectivo,
+        Transferencia,
+        DebitoAutomatico,
+        Cheque
     }
 
 }

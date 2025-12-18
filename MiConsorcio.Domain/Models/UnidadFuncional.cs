@@ -14,6 +14,19 @@ namespace MiConsorcio.Domain.Models
         public string? Departamento { get; private set; }
 
         public EEstadoUnidad Estado { get; private set; }
+        public SaldoUF Saldo { get; private set; }
+
+        public void Debitar(decimal monto)
+        {
+            Saldo.Debitar(monto);
+        }
+
+        public void Acreditar(decimal monto)
+        {
+            Saldo.Acreditar(monto);
+        }
+
+
     }
 
 }
