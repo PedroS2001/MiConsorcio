@@ -10,6 +10,14 @@ namespace MiConsorcio.Domain.Models
     {
         public int Anio { get; private set; }
         public int Mes { get; private set; }
+
+        public Periodo(){        }
+
+        public Periodo(int anio, int mes)
+        {
+            Anio = anio;
+            Mes = mes;
+        }
     }
 
 }

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36804.6 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiConsorcio.Domain", "MiConsorcio.Domain\MiConsorcio.Domain.csproj", "{673679DB-EE05-413E-82FB-B9B428E0EC4A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiConsorcio.Application", "MiConsorcio.Application\MiConsorcio.Application.csproj", "{19FD10A9-637E-479A-9271-D201332C41F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{673679DB-EE05-413E-82FB-B9B428E0EC4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{673679DB-EE05-413E-82FB-B9B428E0EC4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{673679DB-EE05-413E-82FB-B9B428E0EC4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19FD10A9-637E-479A-9271-D201332C41F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19FD10A9-637E-479A-9271-D201332C41F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19FD10A9-637E-479A-9271-D201332C41F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19FD10A9-637E-479A-9271-D201332C41F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

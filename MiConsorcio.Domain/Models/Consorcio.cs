@@ -24,7 +24,15 @@ namespace MiConsorcio.Domain.Models
         private readonly List<Pago> _pagos = new();
         public IReadOnlyCollection<Pago> Pagos => _pagos;
 
+        protected Consorcio() { } // Para ORM
 
+        public Consorcio(string nombre)
+        {
+            if (string.IsNullOrWhiteSpace(nombre))
+                throw new ArgumentException("Nombre requerido");
+
+            Nombre = nombre;
+        }
         public Expensa CalcularExpensa(Periodo periodo)
         {
             if (_expensas.Any(e => e.Periodo == periodo))
@@ -111,6 +119,26 @@ namespace MiConsorcio.Domain.Models
                 uf.Debitar(detalle.Monto);
             }
         }
+
+        public void RegistrarGasto(DateTime fecha,decimal monto,string descripcion,Periodo periodoContable, ETipoGasto tipoGasto, Guid categoriaId, Guid proveedorId )
+        {
+            if (monto <= 0)
+                throw new InvalidOperationException("Monto inválido");
+
+            var gasto = new Gasto(
+                this.Id,
+                fecha,
+                periodoContable,
+                monto,
+                tipoGasto,
+                descripcion,
+                categoriaId,
+                proveedorId
+            );
+
+            _gastos.Add(gasto);
+        }
+
 
         public void RegistrarPago(Guid ufId, decimal monto, EMedioDePago medioPago, DateTime fecha)
         {

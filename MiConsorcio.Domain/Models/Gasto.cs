@@ -25,6 +25,20 @@ namespace MiConsorcio.Domain.Models
         public ETipoGasto Tipo { get; private set; }
 
 
+        protected Gasto() { }
+
+        public Gasto(Guid consorcioId,DateTime fecha,Periodo periodoContable,decimal monto,ETipoGasto tipo, string descripcion, Guid categoriaGastoId,Guid? proveedorId = null)
+        {
+            ConsorcioId = consorcioId;
+            Fecha = fecha;
+            PeriodoContable = periodoContable;
+            Monto = monto;
+            Tipo = tipo;
+            Descripcion = descripcion;
+            CategoriaGastoId = categoriaGastoId;
+            ProveedorId = proveedorId;
+        }
+
 
     }
 
