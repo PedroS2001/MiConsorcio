@@ -26,12 +26,18 @@ namespace MiConsorcio.Domain.Models
 
         protected Consorcio() { } // Para ORM
 
-        public Consorcio(string nombre)
+        public Consorcio(string nombre, string cuit, Direccion direccion, EEstadoUnidad estado)
         {
             if (string.IsNullOrWhiteSpace(nombre))
                 throw new ArgumentException("Nombre requerido");
+            if (string.IsNullOrWhiteSpace(cuit))
+                throw new ArgumentException("Cuit requerido");
+
 
             Nombre = nombre;
+            Cuit = cuit;
+            Direccion = direccion;
+            Estado = estado;
         }
         public Expensa CalcularExpensa(Periodo periodo)
         {

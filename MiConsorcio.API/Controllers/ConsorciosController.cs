@@ -1,4 +1,6 @@
-﻿using MiConsorcio.API.Requests;
+﻿using MediatR;
+using MiConsorcio.API.Requests;
+using MiConsorcio.Application.Queries;
 using MiConsorcio.Application.UseCases.Consorcio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,25 +11,21 @@ namespace MiConsorcio.API.Controllers
     [Route("api/[controller]")]
     public class ConsorciosController : ControllerBase
     {
-        private readonly CrearConsorcioHandler _handler;
+        private readonly IMediator _mediator;
 
-        public ConsorciosController(CrearConsorcioHandler handler)
+        public ConsorciosController(IMediator mediator)
         {
-            _handler = handler;
+            _mediator = mediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> Crear([FromBody] CrearConsorcioRequest request)
         {
-            var command = new CrearConsorcioCommand(request.Nombre);
+            var command = new CrearConsorcioCommand(request.Nombre, request.Cuit, request.Direccion, request.Estado);
 
-            var consorcioId = await _handler.Handle(command);
+            var consorcioId = await _mediator.Send(command);
 
-            return CreatedAtAction(
-                nameof(ObtenerPorId),
-                new { id = consorcioId },
-                null
-            );
+            return CreatedAtAction(nameof(ObtenerPorId), new { id = consorcioId }, null);
         }
 
         [HttpGet("{id}")]
@@ -36,6 +34,15 @@ namespace MiConsorcio.API.Controllers
             // lo hacemos después (Query)
             return Ok();
         }
+
+        [HttpGet("{consorcioId}/dashboard")]
+        public async Task<IActionResult> Dashboard(Guid consorcioId)
+        {
+            var query = new DashboardConsorcioQuery(consorcioId);
+            var dto = await _mediator.Send(query); // usando MediatR
+            return Ok(dto);
+        }
+
     }
 
 }

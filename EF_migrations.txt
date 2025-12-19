@@ -1,0 +1,5 @@
+dotnet ef migrations add Initial --project ./MiConsorcio.Infrastructure/MiConsorcio.Infrastructure.csproj --startup-project ./MiConsorcio.API/MiConsorcio.API.csproj
+
+
+Desde Infrastructure:
+dotnet ef database update  --startup-project ../MiConsorcio.API
