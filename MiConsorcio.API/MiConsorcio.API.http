@@ -1,0 +1,6 @@
+@MiConsorcio.API_HostAddress = http://localhost:5226
+
+GET {{MiConsorcio.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

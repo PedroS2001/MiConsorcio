@@ -27,6 +27,13 @@ namespace MiConsorcio.Infrastructure.Persistence.Configurations
             builder.HasMany(c => c.Pagos)
                    .WithOne()
                    .HasForeignKey("ConsorcioId");
+
+            builder.OwnsOne(p => p.Direccion, dir =>
+            {
+                dir.Property(d => d.Calle).HasColumnName("Calle");
+                dir.Property(d => d.Ciudad).HasColumnName("Ciudad");
+                dir.Property(d => d.CodigoPostal).HasColumnName("CodigoPostal");
+            });
         }
     }
 

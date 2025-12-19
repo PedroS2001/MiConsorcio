@@ -22,7 +22,8 @@ namespace MiConsorcio.Domain.Models
 
         public EEstadoPago Estado { get; private set; }
 
-        public Pago(Guid consorcioId,Guid unidadFuncionalId,DateTime fecha,decimal monto,EMedioDePago medioDePago)
+        public Pago() { }
+        public Pago(Guid consorcioId, Guid unidadFuncionalId, DateTime fecha, decimal monto, EMedioDePago medioDePago)
         {
             if (monto <= 0)
                 throw new Exception("El monto del pago debe ser mayor a cero");
