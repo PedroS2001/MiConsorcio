@@ -14,4 +14,8 @@
     <ProjectReference Include="..\MiConsorcio.Domain\MiConsorcio.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\UnidadesFuncionales\" />
+  </ItemGroup>
+
 </Project>

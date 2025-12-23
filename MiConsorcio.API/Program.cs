@@ -14,6 +14,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MiConsorcioDB")));
 
 builder.Services.AddScoped<IConsorcioRepository, ConsorcioRepositoryEF>();
+builder.Services.AddScoped<IGastoRepository, GastoRepository>();
+builder.Services.AddScoped<ICategoriaGastoRepository, CategoriaGastoRepository>();
+builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
+
 
 builder.Services.AddScoped<CrearConsorcioHandler>();
 builder.Services.AddScoped<CerrarExpensaHandler>();

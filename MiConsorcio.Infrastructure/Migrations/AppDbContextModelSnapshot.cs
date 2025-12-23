@@ -22,6 +22,33 @@ namespace MiConsorcio.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MiConsorcio.Domain.Models.CategoriaGasto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Nombre")
+                        .IsUnique();
+
+                    b.ToTable("CategoriasGasto");
+                });
+
             modelBuilder.Entity("MiConsorcio.Domain.Models.Consorcio", b =>
                 {
                     b.Property<Guid>("Id")
@@ -98,15 +125,16 @@ namespace MiConsorcio.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoriaGastoId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CategoriaGastoId")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("ConsorcioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("Estado")
                         .HasColumnType("int");
@@ -201,9 +229,11 @@ namespace MiConsorcio.Infrastructure.Migrations
 
             modelBuilder.Entity("MiConsorcio.Domain.Models.Proveedor", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Actividad")
                         .IsRequired()

@@ -17,6 +17,8 @@ namespace MiConsorcio.Infrastructure.Persistence
         public DbSet<Gasto> Gastos => Set<Gasto>();
         public DbSet<Pago> Pagos => Set<Pago>();
         public DbSet<Proveedor> Proveedores => Set<Proveedor>();
+        public DbSet<CategoriaGasto> CategoriasGasto => Set<CategoriaGasto>();
+
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }

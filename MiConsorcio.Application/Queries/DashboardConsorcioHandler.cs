@@ -38,6 +38,18 @@ namespace MiConsorcio.Application.Queries
                                 Nombre = u.Codigo,
                                 Saldo = u.Saldo.Monto
                             }),
+                UltimosGastos = consorcio.Gastos
+                                    .OrderByDescending(g => g.Fecha)
+                                    .Take(5)
+                                    .Select(g => new GastoDto(
+                                        g.Id,
+                                        g.Fecha,
+                                        g.Monto,
+                                        g.CategoriaGastoId.ToString(),
+                                        g.ProveedorId?.ToString(),
+                                        g.Tipo.ToString(),
+                                        g.Descripcion
+                                    )),
                 TotalGastos = consorcio.Expensas.Sum(e => e.Detalles.Sum(g => g.Monto)),
                 TotalPagos = consorcio.Pagos.Sum(p => p.Monto)
             };

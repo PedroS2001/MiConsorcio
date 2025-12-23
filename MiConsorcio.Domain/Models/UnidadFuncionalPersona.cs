@@ -9,7 +9,7 @@ namespace MiConsorcio.Domain.Models
 {
     public class UnidadFuncionalPersona
     {
-        public Guid Id { get; private set; }
+        public int Id { get; private set; }
 
         public Guid UnidadFuncionalId { get; private set; }
         public Guid PersonaId { get; private set; }

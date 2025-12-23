@@ -10,6 +10,7 @@ namespace MiConsorcio.Application.DTOs
         public string Nombre { get; set; }
         public IEnumerable<ExpensaDto> UltimasExpensas { get; set; } = new List<ExpensaDto>();
         public IEnumerable<UFSaldoDto> SaldosUF { get; set; } = new List<UFSaldoDto>();
+        public IEnumerable<GastoDto> UltimosGastos { get; set; } = new List<GastoDto>();
         public decimal TotalGastos { get; set; }
         public decimal TotalPagos { get; set; }
     }

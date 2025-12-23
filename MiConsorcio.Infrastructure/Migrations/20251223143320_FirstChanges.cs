@@ -6,11 +6,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MiConsorcio.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class FirstChanges : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "CategoriasGasto",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Estado = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoriasGasto", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Consorcios",
                 columns: table => new
@@ -54,7 +69,8 @@ namespace MiConsorcio.Infrastructure.Migrations
                 name: "Proveedores",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ConsorcioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RazonSocial = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Cuil = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -101,9 +117,9 @@ namespace MiConsorcio.Infrastructure.Migrations
                     Estado = table.Column<int>(type: "int", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Monto = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     ProveedorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CategoriaGastoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoriaGastoId = table.Column<int>(type: "int", nullable: false),
                     Tipo = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -186,6 +202,12 @@ namespace MiConsorcio.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CategoriasGasto_Nombre",
+                table: "CategoriasGasto",
+                column: "Nombre",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ExpensaDetalle_ExpensaId",
                 table: "ExpensaDetalle",
                 column: "ExpensaId");
@@ -220,6 +242,9 @@ namespace MiConsorcio.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CategoriasGasto");
+
             migrationBuilder.DropTable(
                 name: "ExpensaDetalle");
 

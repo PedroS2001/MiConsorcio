@@ -1,17 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using MiConsorcio.Domain.Enums;
+using MiConsorcio.Domain.Models;
+
 
 namespace MiConsorcio.Application.UseCases.Gastos
 {
     public record RegistrarGastoCommand(
         Guid ConsorcioId,
-        decimal Monto,
         DateTime Fecha,
-        Guid CategoriaId,
-        Guid ProveedorId
-    );
+        decimal Importe,
+        ETipoGasto tipo,
+        int CategoriaId,
+        Guid? ProveedorId,
+        string Descripcion,
+        int PeriodoAnio,
+        int PeriodoMes,
+        string? MedioPago
+    ) : IRequest<Guid>;
 
 }

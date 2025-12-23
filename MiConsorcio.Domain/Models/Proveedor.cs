@@ -9,7 +9,7 @@ namespace MiConsorcio.Domain.Models
 {
     public class Proveedor
     {
-        public Guid Id { get; private set; }
+        public int Id { get; private set; }
 
         public Guid ConsorcioId { get; private set; }
 
@@ -21,6 +21,28 @@ namespace MiConsorcio.Domain.Models
         public string? Telefono { get; private set; }
 
         public EEstadoPersona Estado { get; private set; }
+
+        private Proveedor() { } // EF
+
+        public Proveedor(
+            Guid consorcioId,
+            string razonSocial,
+            string cuit,
+            string actividad,
+            string email,
+            string telefono,
+            EEstadoPersona estado
+            )
+        {
+            ConsorcioId = consorcioId;
+            RazonSocial = razonSocial;
+            Cuil = cuit;
+            Actividad = actividad;
+            Email = email;
+            Telefono = telefono;
+            Estado = estado;
+        }
+
     }
 
 }

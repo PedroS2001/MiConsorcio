@@ -1,5 +1,7 @@
-﻿using MiConsorcio.Application.Interfaces;
+﻿using MediatR;
+using MiConsorcio.Application.Interfaces;
 using MiConsorcio.Domain.Enums;
+using MiConsorcio.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,26 +10,33 @@ using System.Threading.Tasks;
 
 namespace MiConsorcio.Application.UseCases.Gastos
 {
-    public class RegistrarGastoHandler
+    public class RegistrarGastoHandler : IRequestHandler<RegistrarGastoCommand, Guid>
     {
-        private readonly IConsorcioRepository _repo;
+        private readonly IGastoRepository _gastoRepository;
+        private readonly IConsorcioRepository _consorcioRepository;
 
-        public async Task Handle(RegistrarGastoCommand cmd)
+        public RegistrarGastoHandler(
+            IGastoRepository gastoRepository,
+            IConsorcioRepository consorcioRepository)
         {
-            var consorcio = await _repo.GetById(cmd.ConsorcioId);
+            _gastoRepository = gastoRepository;
+            _consorcioRepository = consorcioRepository;
+        }
 
-            consorcio.RegistrarGasto(
-                cmd.Fecha,
-                cmd.Monto,
-                "descripcion por defecto",
-                new Domain.Models.Periodo(cmd.Fecha.Month, cmd.Fecha.Year),
-                ETipoGasto.Ordinario,
-                cmd.CategoriaId,
-                cmd.ProveedorId
-            );
+        public async Task<Guid> Handle(RegistrarGastoCommand request, CancellationToken cancellationToken)
+        {
+            var consorcio = await _consorcioRepository.GetById(request.ConsorcioId);
+            if (consorcio is null)
+                throw new Exception("Consorcio inexistente");
 
-            await _repo.Save(consorcio);
-        } 
+            Periodo periodo = new Periodo(request.PeriodoAnio, request.PeriodoMes);
+            var gasto = Gasto.Crear(request.ConsorcioId, request.Fecha, periodo, request.Importe, request.tipo, request.Descripcion, request.CategoriaId, request.ProveedorId);
+
+            await _gastoRepository.AddAsync(gasto);
+
+            return gasto.Id;
+        }
     }
+
 
 }

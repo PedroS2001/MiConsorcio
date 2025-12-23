@@ -11,6 +11,14 @@ namespace MiConsorcio.Infrastructure.Persistence.Configurations
         {
             builder.HasKey(g => g.Id);
 
+            builder.Property(g => g.Monto)
+                .HasColumnType("decimal(18,2)")
+                .IsRequired();
+            builder.Property(x => x.Descripcion)
+                .IsRequired()
+                .HasMaxLength(500);
+
+
             builder.OwnsOne(g => g.PeriodoContable, pc =>
             {
                 pc.Property(p => p.Anio).HasColumnName("PeriodoAno");
