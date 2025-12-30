@@ -126,7 +126,7 @@ namespace MiConsorcio.Domain.Models
             }
         }
 
-        public void RegistrarGasto(DateTime fecha, decimal monto, string descripcion, Periodo periodoContable, ETipoGasto tipoGasto, int categoriaId, Guid proveedorId)
+        public void RegistrarGasto(DateTime fecha, decimal monto, string descripcion, Periodo periodoContable, ETipoGasto tipoGasto, int categoriaId, int proveedorId)
         {
             if (monto <= 0)
                 throw new InvalidOperationException("Monto inválido");

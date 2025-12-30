@@ -11,7 +11,7 @@ namespace MiConsorcio.Application.UseCases.Gastos
         decimal Importe,
         ETipoGasto tipo,
         int CategoriaId,
-        Guid? ProveedorId,
+        int? ProveedorId,
         string Descripcion,
         int PeriodoAnio,
         int PeriodoMes,

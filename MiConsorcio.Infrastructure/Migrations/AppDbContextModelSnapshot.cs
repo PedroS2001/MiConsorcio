@@ -146,8 +146,8 @@ namespace MiConsorcio.Infrastructure.Migrations
                     b.Property<decimal>("Monto")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("ProveedorId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("ProveedorId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Tipo")
                         .HasColumnType("int");

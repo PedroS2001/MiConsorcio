@@ -135,7 +135,7 @@ namespace MiConsorcio.Infrastructure.Migrations
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Monto = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    ProveedorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ProveedorId = table.Column<int>(type: "int", nullable: true),
                     CategoriaGastoId = table.Column<int>(type: "int", nullable: false),
                     Tipo = table.Column<int>(type: "int", nullable: false)
                 },

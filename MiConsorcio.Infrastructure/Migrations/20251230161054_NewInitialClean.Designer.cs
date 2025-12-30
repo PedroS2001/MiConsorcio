@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MiConsorcio.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251230155814_NewInitialClean")]
+    [Migration("20251230161054_NewInitialClean")]
     partial class NewInitialClean
     {
         /// <inheritdoc />
@@ -149,8 +149,8 @@ namespace MiConsorcio.Infrastructure.Migrations
                     b.Property<decimal>("Monto")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("ProveedorId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("ProveedorId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Tipo")
                         .HasColumnType("int");
