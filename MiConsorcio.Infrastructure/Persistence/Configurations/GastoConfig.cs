@@ -14,6 +14,7 @@ namespace MiConsorcio.Infrastructure.Persistence.Configurations
             builder.Property(g => g.Monto)
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();
+
             builder.Property(x => x.Descripcion)
                 .IsRequired()
                 .HasMaxLength(500);

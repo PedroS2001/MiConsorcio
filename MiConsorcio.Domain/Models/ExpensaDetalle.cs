@@ -19,7 +19,7 @@ namespace MiConsorcio.Domain.Models
 
         protected ExpensaDetalle() { }
 
-        public ExpensaDetalle(Guid expensaId, Guid unidadFuncionalId, decimal monto)
+        internal ExpensaDetalle(Guid expensaId, Guid unidadFuncionalId, decimal monto)
         {
             Id = Guid.NewGuid();
             ExpensaId = expensaId;

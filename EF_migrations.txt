@@ -1,6 +1,19 @@
-Desde la solucion
+/***** DESDE LA SOLUCION
 dotnet ef migrations add Initial --project ./MiConsorcio.Infrastructure/MiConsorcio.Infrastructure.csproj --startup-project ./MiConsorcio.API/MiConsorcio.API.csproj
 
 
-Desde Infrastructure:
+/***** DESDE INFRASTRUCTURE
+cd MiConsorcio.Infrastructure
+
+/**reemplaza lo de arriba en vez de correrlo de la solución corro esto directo
+
+dotnet ef migrations add InitialClean --startup-project ../MiConsorcio.API
 dotnet ef database update  --startup-project ../MiConsorcio.API
+
+
+
+/***** OTROS COMANDOS UTILES (DESDE INFRASTRUCTURA SEÑALANDO EL PROYECTO CON CONECCION A LA BBDD
+dotnet ef database drop	--startup-project ../MiConsorcio.API
+dotnet ef migrations remove --startup-project ../MiConsorcio.API
+dotnet ef migrations add InitialClean --startup-project ../MiConsorcio.API
+dotnet ef database update --startup-project ../MiConsorcio.API

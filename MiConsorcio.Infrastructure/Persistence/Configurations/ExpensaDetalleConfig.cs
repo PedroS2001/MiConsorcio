@@ -19,10 +19,11 @@ namespace MiConsorcio.Infrastructure.Persistence.Configurations
                    .IsRequired()
                    .HasPrecision(18, 2);
 
-            builder.HasOne(x => x.Expensa)
-                   .WithMany(x => x.Detalles)
-                   .HasForeignKey(x => x.ExpensaId)
-                   .OnDelete(DeleteBehavior.Cascade);
+            builder.Property(x => x.ExpensaId)
+                    .IsRequired();
+
+            builder.Property(x => x.UnidadFuncionalId)
+                    .IsRequired();
         }
     }
 

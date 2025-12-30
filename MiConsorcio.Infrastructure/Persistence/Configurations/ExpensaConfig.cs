@@ -15,19 +15,26 @@ namespace MiConsorcio.Infrastructure.Persistence.Configurations
         {
             builder.HasKey(e => e.Id);
 
-            builder.HasMany<ExpensaDetalle>()
+            builder.HasMany(e => e.Detalles)
                    .WithOne(d => d.Expensa)
-                   .HasForeignKey(ed => ed.ExpensaId)
+                   .HasForeignKey(d => d.ExpensaId)
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.Navigation(e => e.Detalles)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
+            builder.HasOne(e => e.Consorcio)
+                   .WithMany(c => c.Expensas)
+                   .HasForeignKey(e => e.ConsorcioId)
+                   .IsRequired()
+                   .OnDelete(DeleteBehavior.NoAction);
+
+
+
             builder.OwnsOne(e => e.Periodo, p =>
             {
                 p.Property(x => x.Anio).HasColumnName("PeriodoAnio");
                 p.Property(x => x.Mes).HasColumnName("PeriodoMes");
-
                 p.HasIndex(x => new { x.Anio, x.Mes }).IsUnique();
             });
 

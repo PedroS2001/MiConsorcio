@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MiConsorcio.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251230131901_Initial")]
-    partial class Initial
+    [Migration("20251230154740_InitialClean")]
+    partial class InitialClean
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,10 +109,8 @@ namespace MiConsorcio.Infrastructure.Migrations
                     b.Property<Guid>("ExpensaId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ExpensaId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<decimal>("Monto")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("UnidadFuncionalId")
@@ -122,9 +120,7 @@ namespace MiConsorcio.Infrastructure.Migrations
 
                     b.HasIndex("ExpensaId");
 
-                    b.HasIndex("ExpensaId1");
-
-                    b.ToTable("ExpensaDetalle");
+                    b.ToTable("ExpensaDetalles", (string)null);
                 });
 
             modelBuilder.Entity("MiConsorcio.Domain.Models.Gasto", b =>
@@ -220,12 +216,18 @@ namespace MiConsorcio.Infrastructure.Migrations
                     b.Property<int>("Estado")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("FechaNacimiento")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefono")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TipoDocumento")
+                        .HasColumnType("int");
 
                     b.Property<int>("TipoPersona")
                         .HasColumnType("int");
@@ -373,10 +375,10 @@ namespace MiConsorcio.Infrastructure.Migrations
 
             modelBuilder.Entity("MiConsorcio.Domain.Models.Expensa", b =>
                 {
-                    b.HasOne("MiConsorcio.Domain.Models.Consorcio", null)
+                    b.HasOne("MiConsorcio.Domain.Models.Consorcio", "Consorcio")
                         .WithMany("Expensas")
                         .HasForeignKey("ConsorcioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.OwnsOne("MiConsorcio.Domain.Models.Periodo", "Periodo", b1 =>
@@ -403,6 +405,8 @@ namespace MiConsorcio.Infrastructure.Migrations
                                 .HasForeignKey("ExpensaId");
                         });
 
+                    b.Navigation("Consorcio");
+
                     b.Navigation("Periodo")
                         .IsRequired();
                 });
@@ -410,14 +414,10 @@ namespace MiConsorcio.Infrastructure.Migrations
             modelBuilder.Entity("MiConsorcio.Domain.Models.ExpensaDetalle", b =>
                 {
                     b.HasOne("MiConsorcio.Domain.Models.Expensa", "Expensa")
-                        .WithMany()
+                        .WithMany("Detalles")
                         .HasForeignKey("ExpensaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("MiConsorcio.Domain.Models.Expensa", null)
-                        .WithMany("Detalles")
-                        .HasForeignKey("ExpensaId1");
 
                     b.Navigation("Expensa");
                 });
@@ -427,7 +427,7 @@ namespace MiConsorcio.Infrastructure.Migrations
                     b.HasOne("MiConsorcio.Domain.Models.Consorcio", null)
                         .WithMany("Gastos")
                         .HasForeignKey("ConsorcioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.OwnsOne("MiConsorcio.Domain.Models.Periodo", "PeriodoContable", b1 =>
@@ -460,7 +460,7 @@ namespace MiConsorcio.Infrastructure.Migrations
                     b.HasOne("MiConsorcio.Domain.Models.Consorcio", null)
                         .WithMany("Pagos")
                         .HasForeignKey("ConsorcioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -502,7 +502,8 @@ namespace MiConsorcio.Infrastructure.Migrations
                 {
                     b.HasOne("MiConsorcio.Domain.Models.Consorcio", null)
                         .WithMany("Unidades")
-                        .HasForeignKey("ConsorcioId");
+                        .HasForeignKey("ConsorcioId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsOne("MiConsorcio.Domain.Models.SaldoUF", "Saldo", b1 =>
                         {

@@ -13,8 +13,10 @@ namespace MiConsorcio.Domain.Models
 
         public string Nombre { get; private set; }
         public string Apellido { get; private set; }
+        public ETipoDocumento TipoDocumento { get; private set; }
         public string Documento { get; private set; }
         public ETipoPersona TipoPersona { get; private set; }
+        public DateTime FechaNacimiento { get; private set; }
         public Direccion Direccion { get; private set; }
 
         public string? Email { get; private set; }

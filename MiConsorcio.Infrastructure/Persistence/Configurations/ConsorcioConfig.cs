@@ -18,15 +18,31 @@ namespace MiConsorcio.Infrastructure.Persistence.Configurations
 
             builder.HasMany(c => c.Unidades)
                    .WithOne()
-                   .HasForeignKey("ConsorcioId");
+                   .HasForeignKey("ConsorcioId")
+                   .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(c => c.Expensas)
-                   .WithOne()
-                   .HasForeignKey("ConsorcioId");
+
+            //builder.HasMany(c => c.Expensas)
+            //       .WithOne(e => e.Consorcio)
+            //       .HasForeignKey(e => e.ConsorcioId)
+            //       .OnDelete(DeleteBehavior.Restrict);
+            //builder.Navigation(c => c.Expensas)
+            //    .UsePropertyAccessMode(PropertyAccessMode.Field);
+
 
             builder.HasMany(c => c.Pagos)
                    .WithOne()
-                   .HasForeignKey("ConsorcioId");
+                   .HasForeignKey("ConsorcioId")
+                   .OnDelete(DeleteBehavior.Restrict);
+            //builder.Navigation(c => c.Pagos)
+            //    .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.HasMany(c => c.Gastos)
+                .WithOne()
+                .HasForeignKey("ConsorcioId")
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.Navigation(c => c.Gastos)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
             builder.OwnsOne(p => p.Direccion, dir =>
             {

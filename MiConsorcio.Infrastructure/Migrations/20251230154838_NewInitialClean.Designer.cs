@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MiConsorcio.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251223143320_FirstChanges")]
-    partial class FirstChanges
+    [Migration("20251230154838_NewInitialClean")]
+    partial class NewInitialClean
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,6 +110,7 @@ namespace MiConsorcio.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Monto")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("UnidadFuncionalId")
@@ -119,7 +120,7 @@ namespace MiConsorcio.Infrastructure.Migrations
 
                     b.HasIndex("ExpensaId");
 
-                    b.ToTable("ExpensaDetalle");
+                    b.ToTable("ExpensaDetalles", (string)null);
                 });
 
             modelBuilder.Entity("MiConsorcio.Domain.Models.Gasto", b =>
@@ -215,6 +216,9 @@ namespace MiConsorcio.Infrastructure.Migrations
                     b.Property<int>("Estado")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("FechaNacimiento")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -222,12 +226,15 @@ namespace MiConsorcio.Infrastructure.Migrations
                     b.Property<string>("Telefono")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TipoDocumento")
+                        .HasColumnType("int");
+
                     b.Property<int>("TipoPersona")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Persona");
+                    b.ToTable("Personas");
                 });
 
             modelBuilder.Entity("MiConsorcio.Domain.Models.Proveedor", b =>
@@ -247,7 +254,8 @@ namespace MiConsorcio.Infrastructure.Migrations
 
                     b.Property<string>("Cuil")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -257,14 +265,18 @@ namespace MiConsorcio.Infrastructure.Migrations
 
                     b.Property<string>("RazonSocial")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Telefono")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Proveedores");
+                    b.HasIndex("Cuil")
+                        .IsUnique();
+
+                    b.ToTable("Proveedores", (string)null);
                 });
 
             modelBuilder.Entity("MiConsorcio.Domain.Models.UnidadFuncional", b =>
@@ -300,6 +312,31 @@ namespace MiConsorcio.Infrastructure.Migrations
                     b.HasIndex("ConsorcioId");
 
                     b.ToTable("UnidadesFuncionales");
+                });
+
+            modelBuilder.Entity("MiConsorcio.Domain.Models.UnidadFuncionalPersona", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PersonaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Rol")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UnidadFuncionalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UFPersonas");
                 });
 
             modelBuilder.Entity("MiConsorcio.Domain.Models.Consorcio", b =>
@@ -338,10 +375,10 @@ namespace MiConsorcio.Infrastructure.Migrations
 
             modelBuilder.Entity("MiConsorcio.Domain.Models.Expensa", b =>
                 {
-                    b.HasOne("MiConsorcio.Domain.Models.Consorcio", null)
+                    b.HasOne("MiConsorcio.Domain.Models.Consorcio", "Consorcio")
                         .WithMany("Expensas")
                         .HasForeignKey("ConsorcioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.OwnsOne("MiConsorcio.Domain.Models.Periodo", "Periodo", b1 =>
@@ -368,17 +405,21 @@ namespace MiConsorcio.Infrastructure.Migrations
                                 .HasForeignKey("ExpensaId");
                         });
 
+                    b.Navigation("Consorcio");
+
                     b.Navigation("Periodo")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("MiConsorcio.Domain.Models.ExpensaDetalle", b =>
                 {
-                    b.HasOne("MiConsorcio.Domain.Models.Expensa", null)
+                    b.HasOne("MiConsorcio.Domain.Models.Expensa", "Expensa")
                         .WithMany("Detalles")
                         .HasForeignKey("ExpensaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Expensa");
                 });
 
             modelBuilder.Entity("MiConsorcio.Domain.Models.Gasto", b =>
@@ -386,7 +427,7 @@ namespace MiConsorcio.Infrastructure.Migrations
                     b.HasOne("MiConsorcio.Domain.Models.Consorcio", null)
                         .WithMany("Gastos")
                         .HasForeignKey("ConsorcioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.OwnsOne("MiConsorcio.Domain.Models.Periodo", "PeriodoContable", b1 =>
@@ -419,7 +460,7 @@ namespace MiConsorcio.Infrastructure.Migrations
                     b.HasOne("MiConsorcio.Domain.Models.Consorcio", null)
                         .WithMany("Pagos")
                         .HasForeignKey("ConsorcioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -447,7 +488,7 @@ namespace MiConsorcio.Infrastructure.Migrations
 
                             b1.HasKey("PersonaId");
 
-                            b1.ToTable("Persona");
+                            b1.ToTable("Personas");
 
                             b1.WithOwner()
                                 .HasForeignKey("PersonaId");
@@ -461,7 +502,8 @@ namespace MiConsorcio.Infrastructure.Migrations
                 {
                     b.HasOne("MiConsorcio.Domain.Models.Consorcio", null)
                         .WithMany("Unidades")
-                        .HasForeignKey("ConsorcioId");
+                        .HasForeignKey("ConsorcioId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.OwnsOne("MiConsorcio.Domain.Models.SaldoUF", "Saldo", b1 =>
                         {

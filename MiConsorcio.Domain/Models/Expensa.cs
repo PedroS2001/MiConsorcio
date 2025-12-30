@@ -52,6 +52,11 @@ namespace MiConsorcio.Domain.Models
             this.Estado = EEstadoExpensa.Cerrada;
         }
 
+        public decimal Total()
+        {
+            return _detalles.Sum(d => d.Monto);
+        }
+
 
     }
 

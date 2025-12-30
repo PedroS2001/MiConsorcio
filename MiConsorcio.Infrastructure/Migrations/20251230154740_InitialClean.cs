@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MiConsorcio.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstChanges : Migration
+    public partial class InitialClean : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,14 +45,16 @@ namespace MiConsorcio.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Persona",
+                name: "Personas",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TipoDocumento = table.Column<int>(type: "int", nullable: false),
                     Documento = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TipoPersona = table.Column<int>(type: "int", nullable: false),
+                    FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Calle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Ciudad = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CodigoPostal = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -62,7 +64,7 @@ namespace MiConsorcio.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Persona", x => x.Id);
+                    table.PrimaryKey("PK_Personas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,8 +74,8 @@ namespace MiConsorcio.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ConsorcioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RazonSocial = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Cuil = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RazonSocial = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Cuil = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     Actividad = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -82,6 +84,22 @@ namespace MiConsorcio.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Proveedores", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UFPersonas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UnidadFuncionalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PersonaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Rol = table.Column<int>(type: "int", nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UFPersonas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -102,8 +120,7 @@ namespace MiConsorcio.Infrastructure.Migrations
                         name: "FK_Expensas_Consorcios_ConsorcioId",
                         column: x => x.ConsorcioId,
                         principalTable: "Consorcios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -130,7 +147,7 @@ namespace MiConsorcio.Infrastructure.Migrations
                         column: x => x.ConsorcioId,
                         principalTable: "Consorcios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,7 +171,7 @@ namespace MiConsorcio.Infrastructure.Migrations
                         column: x => x.ConsorcioId,
                         principalTable: "Consorcios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,23 +195,24 @@ namespace MiConsorcio.Infrastructure.Migrations
                         name: "FK_UnidadesFuncionales_Consorcios_ConsorcioId",
                         column: x => x.ConsorcioId,
                         principalTable: "Consorcios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExpensaDetalle",
+                name: "ExpensaDetalles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ExpensaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UnidadFuncionalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Monto = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Monto = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExpensaDetalle", x => x.Id);
+                    table.PrimaryKey("PK_ExpensaDetalles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExpensaDetalle_Expensas_ExpensaId",
+                        name: "FK_ExpensaDetalles_Expensas_ExpensaId",
                         column: x => x.ExpensaId,
                         principalTable: "Expensas",
                         principalColumn: "Id",
@@ -208,8 +226,8 @@ namespace MiConsorcio.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExpensaDetalle_ExpensaId",
-                table: "ExpensaDetalle",
+                name: "IX_ExpensaDetalles_ExpensaId",
+                table: "ExpensaDetalles",
                 column: "ExpensaId");
 
             migrationBuilder.CreateIndex(
@@ -234,6 +252,12 @@ namespace MiConsorcio.Infrastructure.Migrations
                 column: "ConsorcioId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Proveedores_Cuil",
+                table: "Proveedores",
+                column: "Cuil",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UnidadesFuncionales_ConsorcioId",
                 table: "UnidadesFuncionales",
                 column: "ConsorcioId");
@@ -246,7 +270,7 @@ namespace MiConsorcio.Infrastructure.Migrations
                 name: "CategoriasGasto");
 
             migrationBuilder.DropTable(
-                name: "ExpensaDetalle");
+                name: "ExpensaDetalles");
 
             migrationBuilder.DropTable(
                 name: "Gastos");
@@ -255,10 +279,13 @@ namespace MiConsorcio.Infrastructure.Migrations
                 name: "Pagos");
 
             migrationBuilder.DropTable(
-                name: "Persona");
+                name: "Personas");
 
             migrationBuilder.DropTable(
                 name: "Proveedores");
+
+            migrationBuilder.DropTable(
+                name: "UFPersonas");
 
             migrationBuilder.DropTable(
                 name: "UnidadesFuncionales");

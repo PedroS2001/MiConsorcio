@@ -16,6 +16,7 @@ namespace MiConsorcio.Infrastructure.Persistence
         public DbSet<UnidadFuncionalPersona> UFPersonas => Set<UnidadFuncionalPersona>();
         public DbSet<Persona> Personas => Set<Persona>();
         public DbSet<Expensa> Expensas => Set<Expensa>();
+        public DbSet<ExpensaDetalle> ExpensaDetalles => Set<ExpensaDetalle>();
         public DbSet<Gasto> Gastos => Set<Gasto>();
         public DbSet<Pago> Pagos => Set<Pago>();
         public DbSet<Proveedor> Proveedores => Set<Proveedor>();
@@ -27,6 +28,11 @@ namespace MiConsorcio.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            foreach (var fk in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                fk.DeleteBehavior = DeleteBehavior.NoAction;
+            }
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
             base.OnModelCreating(modelBuilder);
         }
