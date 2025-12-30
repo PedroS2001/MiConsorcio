@@ -13,6 +13,8 @@ namespace MiConsorcio.Infrastructure.Persistence
     {
         public DbSet<Consorcio> Consorcios => Set<Consorcio>();
         public DbSet<UnidadFuncional> UnidadesFuncionales => Set<UnidadFuncional>();
+        public DbSet<UnidadFuncionalPersona> UFPersonas => Set<UnidadFuncionalPersona>();
+        public DbSet<Persona> Personas => Set<Persona>();
         public DbSet<Expensa> Expensas => Set<Expensa>();
         public DbSet<Gasto> Gastos => Set<Gasto>();
         public DbSet<Pago> Pagos => Set<Pago>();

@@ -44,7 +44,7 @@ namespace MiConsorcio.Domain.Models
             if (_expensas.Any(e => e.Periodo == periodo))
                 throw new Exception("Ya existe una expensa para ese período");
 
-            var expensa = new Expensa(periodo);
+            var expensa = new Expensa(this.Id, periodo);
 
             var unidadesActivas = _unidades.Where(u => u.Estado == EEstadoUnidad.Activo).ToList();
             if (!unidadesActivas.Any())
@@ -126,7 +126,7 @@ namespace MiConsorcio.Domain.Models
             }
         }
 
-        public void RegistrarGasto(DateTime fecha,decimal monto,string descripcion,Periodo periodoContable, ETipoGasto tipoGasto, int categoriaId, Guid proveedorId )
+        public void RegistrarGasto(DateTime fecha, decimal monto, string descripcion, Periodo periodoContable, ETipoGasto tipoGasto, int categoriaId, Guid proveedorId)
         {
             if (monto <= 0)
                 throw new InvalidOperationException("Monto inválido");

@@ -13,6 +13,16 @@ namespace MiConsorcio.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Expensa> builder)
         {
+            builder.HasKey(e => e.Id);
+
+            builder.HasMany<ExpensaDetalle>()
+                   .WithOne(d => d.Expensa)
+                   .HasForeignKey(ed => ed.ExpensaId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Navigation(e => e.Detalles)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
             builder.OwnsOne(e => e.Periodo, p =>
             {
                 p.Property(x => x.Anio).HasColumnName("PeriodoAnio");

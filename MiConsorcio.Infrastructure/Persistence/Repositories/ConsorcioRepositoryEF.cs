@@ -19,6 +19,7 @@ namespace MiConsorcio.Infrastructure.Persistence.Repositories
                 .Include(c => c.Unidades)
                 .Include(c => c.Expensas)
                 .Include(c => c.Pagos)
+                .Include(c => c.Gastos)
                 .FirstAsync(c => c.Id == id);
         }
 
@@ -30,6 +31,7 @@ namespace MiConsorcio.Infrastructure.Persistence.Repositories
 
         public async Task Save(Consorcio consorcio)
         {
+            _context.Expensas.AddRange(consorcio.Expensas);
             await _context.SaveChangesAsync();
         }
     }

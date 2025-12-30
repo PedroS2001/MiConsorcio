@@ -12,6 +12,7 @@ namespace MiConsorcio.Domain.Models
         public Guid Id { get; private set; }
 
         public Guid ConsorcioId { get; private set; }
+        public Consorcio Consorcio { get; private set; } = null!;
         public Periodo Periodo { get; private set; }
         public EEstadoExpensa Estado { get; private set; }
         public DateTime FechaCreacion { get; private set; }
@@ -23,9 +24,10 @@ namespace MiConsorcio.Domain.Models
 
         protected Expensa() { }
 
-        public Expensa(Periodo periodo)
+        public Expensa(Guid consorcioId, Periodo periodo)
         {
             Id = Guid.NewGuid();
+            ConsorcioId = consorcioId;
             Periodo = periodo;
             Estado = EEstadoExpensa.Borrador;
         }
@@ -36,7 +38,7 @@ namespace MiConsorcio.Domain.Models
             if (Estado != EEstadoExpensa.Borrador)
                 throw new Exception("No se pueden modificar expensas cerradas");
 
-            _detalles.Add(new ExpensaDetalle(unidadFuncionalId, monto));
+            _detalles.Add(new ExpensaDetalle(this.Id, unidadFuncionalId, monto));
         }
 
         public void Cerrar()

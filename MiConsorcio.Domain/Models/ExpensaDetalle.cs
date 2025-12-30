@@ -11,14 +11,18 @@ namespace MiConsorcio.Domain.Models
         public Guid Id { get; private set; }
 
         public Guid ExpensaId { get; private set; }
+        public Expensa Expensa { get; private set; } = null!;
+
         public Guid UnidadFuncionalId { get; private set; }
 
         public decimal Monto { get; private set; }
 
         protected ExpensaDetalle() { }
 
-        public ExpensaDetalle(Guid unidadFuncionalId, decimal monto)
+        public ExpensaDetalle(Guid expensaId, Guid unidadFuncionalId, decimal monto)
         {
+            Id = Guid.NewGuid();
+            ExpensaId = expensaId;
             UnidadFuncionalId = unidadFuncionalId;
             Monto = monto;
         }

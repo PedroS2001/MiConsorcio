@@ -16,7 +16,7 @@ namespace MiConsorcio.API.Controllers
             _handler = handler;
         }
 
-        [HttpPost("{anio:int}/{mes:int}/cerrar")]
+        [HttpPost("cerrar")]
         public async Task<IActionResult> Cerrar(Guid consorcioId, int anio, int mes)
         {
             var command = new CerrarExpensaCommand(consorcioId, new Periodo(anio, mes));
