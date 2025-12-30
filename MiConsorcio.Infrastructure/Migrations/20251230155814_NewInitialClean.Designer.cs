@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MiConsorcio.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251230154838_NewInitialClean")]
+    [Migration("20251230155814_NewInitialClean")]
     partial class NewInitialClean
     {
         /// <inheritdoc />
